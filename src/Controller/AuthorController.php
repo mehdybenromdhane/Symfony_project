@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Author;
 use App\Repository\AuthorRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -75,5 +78,19 @@ class AuthorController extends AbstractController
         $authors =  $repo->findAll();
 
         return $this->render("author/listAuthors.html.twig", ["list" => $authors]);
+    }
+
+
+
+    #[Route('/add', name: "add_author")]
+    public function addAuthor(Request $req,  ManagerRegistry $manager)
+    {
+        $em =  $manager->getManager();
+        $newAuthor = new Author();
+        $newAuthor->setUsername("william");
+        $newAuthor->setEmail("william@email.com");
+        $em->persist($newAuthor);
+        $em->flush();
+        return $this->redirectToRoute("list_authors");
     }
 }
