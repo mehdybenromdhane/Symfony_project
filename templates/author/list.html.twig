@@ -1,0 +1,65 @@
+
+
+
+{% if not list or  list|length == 0 %}
+
+<h1> no authors </h1>
+
+{% else %}
+
+
+<table border="1" align="center">
+<caption>List of books</caption>
+  <tr>
+
+<td>Id</td>
+<td>Picture</td>
+<td>Username</td>
+<td>Email</td>
+<td>Number of books</td>
+
+<td>Details</td>
+
+
+ </tr>
+
+ {% set total = 0 %}
+
+{% for a in list %}
+
+ <tr>
+
+    <td>{{a.id}}</td>
+    <td> <img src="{{asset(a.picture)}}" width="50"/></td>
+    <td>{{a.username |upper}}</td>
+    <td>{{a.email}}</td>
+    <td>{{a.nb_books}}
+
+        {% set total = total + a.nb_books %}
+    </td>
+
+    <td><a href="{{path('details' , {id: a.id})}}"> details</a></td>
+
+ </tr>
+
+
+ 
+ {% endfor %}
+
+
+
+
+
+</table>
+
+<h1>Number of books : {{total}}</h1>
+
+
+{% endif %}
+
+
+
+
+
+
+
