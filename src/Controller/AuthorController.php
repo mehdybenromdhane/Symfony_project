@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Author;
+use App\Form\AuthorType;
 use App\Repository\AuthorRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -91,6 +92,61 @@ class AuthorController extends AbstractController
         $newAuthor->setEmail("william@email.com");
         $em->persist($newAuthor);
         $em->flush();
+        return $this->redirectToRoute("list_authors");
+    }
+
+
+
+
+    #[Route('/addAuthor', name: "add")]
+    public function add(ManagerRegistry $manager, Request $req)
+
+    {
+        $em = $manager->getManager();
+        $author = new Author();
+        $form = $this->createForm(AuthorType::class, $author);
+        $form->handleRequest($req);
+        if ($form->isSubmitted()) {
+            $em->persist($author);
+            $em->flush();
+            return $this->redirectToRoute("list_authors");
+        }
+        return $this->render("author/add.html.twig", ["f" => $form]);
+    }
+
+
+
+    #[Route('/update/{id}', name: "update")]
+    public function update(ManagerRegistry $manager, Request $req, $id, AuthorRepository $repo)
+    {
+        $em = $manager->getManager();
+        $author = $repo->find($id);
+        $form = $this->createForm(AuthorType::class, $author);
+        $form->handleRequest($req);
+
+        if ($form->isSubmitted()) {
+            $em->persist($author);
+            $em->flush();
+            return $this->redirectToRoute("list_authors");
+        }
+        return $this->render("author/update.html.twig", ["f" => $form]);
+    }
+
+
+
+    #[Route('/delete/{id}', name: "delete")]
+    public function delete($id, ManagerRegistry $manager, AuthorRepository $repo)
+    {
+
+
+        $em = $manager->getManager();
+        $author = $repo->find($id);
+
+
+        $em->remove($author);
+
+        $em->flush();
+
         return $this->redirectToRoute("list_authors");
     }
 }
