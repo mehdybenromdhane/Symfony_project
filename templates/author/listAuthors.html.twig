@@ -2,6 +2,9 @@
 
 <h1><a href="{{path('add')}}"> add author</a></h1>
 
+
+
+
 <table border="1" align="center">
 
     <caption>List of authors</caption>
@@ -11,6 +14,8 @@
         <td>Id</td>
         <td>Username</td>
         <td>Email</td>
+        <td>Number of books</td>
+
         <td>Update</td>
         <td>Delete</td>
 
@@ -21,8 +26,10 @@
     {% for a in list %}
     <tr>
         <td>{{a.id}}</td>
-        <td>{{a.username}}</td>
+        <td>{{a.username}}</td> 
         <td>{{a.email}}</td>
+        <td>{{a.nbbooks}}</td>
+
         <td><a href="{{path('update' , {'id':a.id})}}"> update</a></td>
    <td><a href="{{path('delete',{'id':a.id})}}"> delete</a></td>
    

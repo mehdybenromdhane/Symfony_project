@@ -1,0 +1,64 @@
+
+<center>
+
+    <h1>List of books</h1>
+
+    <table border="1">
+        <tr>
+            <td>Ref</td>
+            <td>Title</td>
+            <td>Publication Date</td>
+            <td>Category</td>
+            <td>Published</td>
+            <td>Author</td>
+            <td>Update</td>
+
+        </tr>
+
+
+        {% set nbTrue = 0 %}
+        {% set nbFalse = 0 %}
+
+        {% for b in books %}
+
+        {% if b.published ==true  %}
+
+        {% set nbTrue = nbTrue+1 %}
+
+        
+        <tr>
+            <td>{{b.ref}}</td>
+            <td>{{b.title}}</td>
+            <td>{{b.publicationdate|date}}</td>
+            <td>{{b.category}}</td>
+            <td>{{b.published}}</td>
+            <td>{{b.author}}</td>
+            <td><a href="{{path('update_book',{idbook:b.ref})}}">Update</a></td>
+            <td><a href="{{path('delete_book',{ref:b.ref})}}">delete</a></td>
+
+        </tr>
+
+        {% else %}
+
+        {% set nbFalse = nbFalse + 1  %} 
+
+
+
+        {% endif %}
+
+
+        {% endfor %}
+
+        {% if nbTrue == 0 %}
+
+        <h1> No published books !!!</h1>
+
+        {% endif %}
+    </table>
+
+
+    <h3> Number of published books : {{nbTrue}}</h3>
+
+    <h3> Number of unpublished books {{nbFalse}}</h3>
+
+</center>

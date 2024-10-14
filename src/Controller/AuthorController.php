@@ -132,20 +132,21 @@ class AuthorController extends AbstractController
         return $this->render("author/update.html.twig", ["f" => $form]);
     }
 
-
-
     #[Route('/delete/{id}', name: "delete")]
     public function delete($id, ManagerRegistry $manager, AuthorRepository $repo)
     {
-
-
         $em = $manager->getManager();
         $author = $repo->find($id);
 
 
-        $em->remove($author);
+        if ($author->getNbBooks() == 0) {
 
-        $em->flush();
+            $em->remove($author);
+            $em->flush();
+        } else {
+
+            return $this->render("author/errorDelete.html.twig");
+        }
 
         return $this->redirectToRoute("list_authors");
     }
