@@ -1,5 +1,41 @@
 
+
+<a href="{{path('update_category')}}"> Update category </a>
+
 <center>
+
+
+
+    <form action="{{path('update_category')}}">
+
+
+        <label for="">Old Category</label>
+        <select name="oldcategory" id="">
+
+            {% for b in books %}
+            <option value="{{b.category}}"> {{b.category}}</option>
+
+{% endfor %}
+
+        </select>
+
+
+
+        
+        <label for="">New Category</label>
+        <select name="newcategory" id="">
+
+            <option value="Cinema"> Cinema</option>
+
+            <option value="Rommance"> Rommance</option>
+
+
+        </select>
+
+
+        <input type="submit" value="change">
+
+    </form>
 
     <h1>List of books</h1>
 

@@ -40,4 +40,55 @@ class BookRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+
+
+
+    public function findBooksBytitle()
+    {
+
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT b FROM App\Entity\Book b ORDER BY b.ref DESC');
+
+        return $query->getResult();
+    }
+
+    public function findBooksByref()
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.ref', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
+    public function showAllBooksByAuthor($name)
+    {
+
+        return $this->createQueryBuilder('b')
+            ->join('b.author', 'a')
+            ->addSelect('a')
+
+            ->where('a.username like :name')
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
+    public function updateCategory($old, $new)
+    {
+
+        return $this->createQueryBuilder('b')
+            ->update()->set('b.category', ':newCat')
+            ->setParameter('newCat', $new)
+
+            ->where('b.category like :oldCat')
+            ->setParameter('oldCat', $old)
+
+            ->getQuery()
+            ->getResult();
+    }
 }

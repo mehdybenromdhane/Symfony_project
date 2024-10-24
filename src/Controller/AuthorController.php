@@ -82,6 +82,32 @@ class AuthorController extends AbstractController
     }
 
 
+    #[Route('/search', name: "search_authors")]
+    public function  search(AuthorRepository $repo, Request $req)
+    {
+
+
+        $name = $req->get("username");
+        $authors =  $repo->findAuthorByUsername($name);
+
+        return $this->render("author/search.html.twig", ["list" => $authors]);
+    }
+
+
+    #[Route('/minmax', name: "minmax_authors")]
+    public function  searchByNB(AuthorRepository $repo, Request $req)
+    {
+
+
+        $min = $req->get("min");
+
+        $max = $req->get('max');
+        $authors =  $repo->findBooksByMinMAX($min, $max);
+
+        return $this->render("author/search.html.twig", ["list" => $authors]);
+    }
+
+
 
     #[Route('/add', name: "add_author")]
     public function addAuthor(Request $req,  ManagerRegistry $manager)
@@ -139,14 +165,10 @@ class AuthorController extends AbstractController
         $author = $repo->find($id);
 
 
-        if ($author->getNbBooks() == 0) {
 
-            $em->remove($author);
-            $em->flush();
-        } else {
+        $em->remove($author);
+        $em->flush();
 
-            return $this->render("author/errorDelete.html.twig");
-        }
 
         return $this->redirectToRoute("list_authors");
     }

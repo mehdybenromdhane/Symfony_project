@@ -52,9 +52,26 @@ class BookController extends AbstractController
     #[Route('/listbooks', name: "list_books")]
     public function listBooks(BookRepository $repo)
     {
-        return $this->render("book/listBooks.html.twig", ["books" => $repo->findAll()]);
+        return $this->render("book/listBooks.html.twig", [
+            "books" => $repo->showAllBooksByAuthor('William test')
+        ]);
     }
 
+
+
+    #[Route('/updateCat', name: "update_category")]
+    public function updateCategory(BookRepository $repo, Request $req)
+    {
+
+
+
+        $old = $req->get('oldcategory');
+        $new = $req->get('newcategory');
+
+        $repo->updateCategory($old, $new);
+
+        return $this->redirectToRoute('list_books');
+    }
 
 
     #[Route('/updateBook/{idbook}', name: "update_book")]

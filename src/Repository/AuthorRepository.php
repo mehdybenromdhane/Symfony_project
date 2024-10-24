@@ -40,4 +40,32 @@ class AuthorRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+
+
+
+    public function findAuthorByUsername($user)
+    {
+
+
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT a FROM App\Entity\Author a WHERE a.username LIKE :name')
+            ->setParameter('name', '%' . $user . '%');
+
+        return $query->getResult();
+    }
+
+
+    public function findBooksByMinMAX($min, $max)
+    {
+
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT b FROM App\Entity\Author b WHERE b.nb_books BETWEEN :min and :max')
+
+            ->setParameter('min', $min)
+            ->setParameter('max', $max);
+
+
+        return $query->getResult();
+    }
 }

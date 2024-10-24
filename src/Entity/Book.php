@@ -22,12 +22,12 @@ class Book
     #[ORM\Column(length: 255)]
     private ?string $category = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Author $author = null;
-
     #[ORM\Column]
     private ?bool $published = null;
+
+    #[ORM\ManyToOne(inversedBy: 'books')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Author $author = null;
 
     public function getRef(): ?int
     {
@@ -75,17 +75,6 @@ class Book
         return $this;
     }
 
-    public function getAuthor(): ?Author
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(?Author $author): static
-    {
-        $this->author = $author;
-
-        return $this;
-    }
 
     public function isPublished(): ?bool
     {
@@ -95,6 +84,18 @@ class Book
     public function setPublished(bool $published): static
     {
         $this->published = $published;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?Author
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?Author $author): static
+    {
+        $this->author = $author;
 
         return $this;
     }
